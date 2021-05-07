@@ -10,8 +10,19 @@ class DropdownUtility {
     init() {
       var index = this.findIndex();
       this.setData(index);
+
+      this.dropdownChangeEvent();
     }
 
+    dropdownChangeEvent()
+    {
+      $('#'+this.dropdownID).change(function() {
+        this.destroyTable();
+        index = $('#'+this.dropdownID+' option:selected').index();
+        this.setData(index);
+    
+      });
+    }
     findIndex() {
       var _this = this;
       debugger
@@ -106,11 +117,4 @@ var options = {
 
 $(document).ready(function() {
   new DropdownUtility(options).init();
-
-  $('#presentation_dropdown').change(function() {
-    new DropdownUtility(options).destroyTable();
-    index = $('#presentation_dropdown option:selected').index();
-    new DropdownUtility(options).setData(index);
-
-  });
 });
