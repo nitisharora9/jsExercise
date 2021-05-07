@@ -1,98 +1,116 @@
 class DropdownUtility {
 
     constructor(options) {
-        this.url = options.url;
-        this.columnsData = options.columnsData;
+        this.tableID= options.tableID;
+        this.dropdownID = options.dropdownID;
+        this.defaultTable = options.defaultTable;
+        this.values= options.values; 
     }
 
     init() {
-        this.loadRecords(this.url)
+      var index = this.findIndex();
+      this.setData(index);
+    }
+
+    findIndex() {
+      var _this = this;
+      debugger
+      for(var index = 0; index<_this.values.length; index++){
+        if(_this.defaultTable == _this.values[index].id){
+          return index;
+        }
+      }
+    }
+
+    setData(index) {
+      var url = this.values[index].url;
+      var columnsData = this.values[index].columnsData;
+      this.loadRecords(url, columnsData)
     }
   
-    loadRecords(url) {
+    destroyTable() {
+      $('#'+this.tableID).DataTable().destroy();
+      $('#'+this.tableID).empty();
+    }
+
+    loadRecords(url, columnsData) {
       var _this = this;
         $.get(url, function(data) {
-            _this.populateDataTable(data);
+            _this.populateDataTable(data, columnsData);
         })
     }
 
-    populateDataTable(data) {
-        var _this = this;
-        this.table = $("#presentation_table").DataTable({
-          data: data,
-          columns: _this.columnsData,
-        });
+    populateDataTable(data, columnsData) {
+      var _this = this;
+      this.table = $("#"+_this.tableID).DataTable({
+        data: data,
+        columns: columnsData,
+      });
     }
 }
 
-var options = [
-  generic = {
-    url: "https://my.api.mockaroo.com/generic_present.json?key=6070af90",
-    columnsData: [
+var options = {
+  tableID : "presentation_table",
+  dropdownID : "presentation_dropdown",
+  defaultTable : "generic_present",
+  values : [   
+    {
+      id: "generic_present",
+      url: "https://my.api.mockaroo.com/generic_present.json?key=6070af90",
+      columnsData: [
         { 
-            "data": "selection",
-            "title": "Selection"
+          "data": "selection",
+          "title": "Selection"
         },
 
         {
-            "data": "name",
-            "title": "Name"
+          "data": "name",
+          "title": "Name"
         },
 
         {
-            "data": "viewer",
-            "title": "Viewer"
+          "data": "viewer",
+          "title": "Viewer"
         }
-    ]
-  },
+      ]
+    },
   
-  account = {
-    url: "https://my.api.mockaroo.com/account_present.json?key=6070af90",
-    columnsData: [
+    {
+      id: "account_present",
+      url: "https://my.api.mockaroo.com/account_present.json?key=6070af90",
+      columnsData: [
         {   
-             "data": "selection",
-            "title": "Selection" 
+          "data": "selection",
+          "title": "Selection" 
         },
         {   
-            "data": "name",
-            "title": "Name" 
+          "data": "name",
+          "title": "Name" 
         },
         { 
-            "data": "appointment",
-            "title": "Appointment"
+          "data": "appointment",
+          "title": "Appointment"
         },
         { 
-            "data": "app_start_time",
-            "title": "Appointment Start Time"
+          "data": "app_start_time",
+          "title": "Appointment Start Time"
         },
         { 
-            "data": "viewer",
-            "title": "Viewer" 
+          "data": "viewer",
+          "title": "Viewer" 
         }
-    ]
-  }
-]
+      ]
+    }
+  ]
+}
 
 $(document).ready(function() {
-  new DropdownUtility(options[0]).init();
+  new DropdownUtility(options).init();
 
+  $('#presentation_dropdown').change(function() {
+    new DropdownUtility(options).destroyTable();
+    index = $('#presentation_dropdown option:selected').index();
+    new DropdownUtility(options).setData(index);
 
-  function destroyTable(tableID) {
-    $('#'+tableID).DataTable().destroy();
-    $('#'+tableID).empty();
-}
-
-  $("#presentation_dropdown").change(function() {
-    if($("#presentation_dropdown option:selected").index() == 1){
-        
-      destroyTable('presentation_table');
-      new DropdownUtility(options[1]).init();
-    }
-
-    else{
-
-      destroyTable('presentation_table');
-      new DropdownUtility(options[0]).init();
-    }
   });
 });
