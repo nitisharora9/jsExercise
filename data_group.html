@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="data_group.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <style>
+      * {
+          box-sizing: border-box;
+        }
+
+      /* Create two equal columns that floats next to each other */
+      .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class = "parent">
+      <div class = "content">
+       <div>
+          <h1>Add Patient Profile</h1>
+        </div>
+
+        <div>
+          <input type = "checkbox" id = "selectAll" class = "selectAll">
+          <label class = "selAll">Select All</label>
+        </div>
+
+        <div class="row">
+      
+          <div class="column">
+            <form action="#">
+              <fieldset>
+                <legend><input type = "checkbox" id = "data_group1" class = "data_group"> Data Group 1</legend>
+                <label for="field1">Field 1</label>
+                <input type="text" id="field1" name="field1"><br><br>
+                <label for="field2">Field 2</label>
+                <input type="text" id="field2" name="field2"><br><br>
+                <label for="field3">Field 3</label>
+                <input type="text" id="field3" name="field3"><br><br>
+              </fieldset>
+            </form>
+          </div>
+
+          <div class="column">
+            <form action="#">
+              <fieldset>
+                <legend><input type = "checkbox" id = "data_group2" class = "data_group"> Data Group 2</legend>
+                <label for="field4">Field 4</label>
+                <input type="text" id="field4" name="field4"><br><br>
+                <label for="field5">Field 5</label>
+                <input type="text" id="field5" name="field5"><br><br>
+                <label for="field6">Field 6</label>
+                <input type="text" id="field6" name="field6"><br><br>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+    
+        <div class="row">
+
+          <div class="column">
+            <form action="#">
+              <fieldset>
+                <legend><input type = "checkbox" id = "data_group3" class = "data_group"> Data Group 3</legend>
+                <label for="field7">Field 7</label>
+                <input type="text" id="field7" name="field7"><br><br>
+                <label for="field8">Field 8</label>
+                <input type="text" id="field8" name="field8"><br><br>
+                <label for="field9">Field 9</label>
+                <input type="text" id="field9" name="field9"><br><br>
+              </fieldset>
+            </form>
+          </div>
+
+      <!--<div class="column">
+        <h2>Column 4</h2>
+        <p>Some text..</p>
+      </div>-->
+        </div>
+      </div> 
+
+      <div class= "footer">
+        <input type = "button" class = "footerButton" id="cancelButton" value="Cancel">
+        <input type = "button" class = "footerButton" id="okButton" value="OK">        
+      </div>
+    </div>  
+
+    <script>
+      
+      var elements = document.getElementsByClassName("column");
+      var i;
+
+      function gridView() {
+        for (i = 0; i < elements.length; i++) {
+          elements[i].style.width = "50%";
+        }
+      }
+
+      $('.selectAll').click(function() {
+        if($(this).prop("checked")) {
+          $(".data_group").prop("checked", true);
+        } 
+        
+        else {
+          $(".data_group").prop("checked", false);
+        }                
+      });
+
+      $('.data_group').click(function() {
+        if($(this).prop("checked") == false) {
+          $(".selectAll").prop("checked", false);
+        }
+      })
+    </script>
+  </body>
+</html>
