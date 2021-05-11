@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="output"></p>
+
+<script>
+class User {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  compareUserAge(user){
+    var user1Age = this.age;
+    var user2Age = user.age;
+    var user1Name = this.name;
+    var user2Name = user.name;
+
+    if(user1Age > user2Age){
+        displayOutput(user1Name,user2Name);
+    }
+
+    else if(user2Age > user1Age){
+        displayOutput(user2Name,user1Name);
+    }
+  }
+
+  displayOutput(olderUser,youngerUser){
+    document.getElementById("output").innerHTML = olderUser + " is older than " + youngerUser;
+  }
+}
+
+user1 = new User("John", 24);
+user2 = new User("Mary", 30);
+
+user1.compareUserAge(user2);
+
+
+</script>
+
+</body>
+</html>
