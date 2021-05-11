@@ -3,6 +3,7 @@ class DataGroup {
     this.divID = options.divID;
     this.dataGroup = options.dataGroup;
     this.selectAll = options.selectAll;
+    this.checkbox = options.checkbox;
   }
   
   init() {
@@ -11,7 +12,6 @@ class DataGroup {
   }
 
   createDataGroup() {
-    debugger;
     var rowDiv = $("<div class = 'row'></div>");
     
 
@@ -24,7 +24,7 @@ class DataGroup {
       var fieldSet = $("<fieldset></fieldset>");
       colDiv.append(fieldSet);
 
-      var legend = $('<legend><input type = "checkbox" id ="'+ currentGroup.id +'" class = "data_group">'+ currentGroup.name +'</legend>');
+      var legend = $('<legend><input type = "checkbox" id ="'+ currentGroup.id +'" class = "'+this.checkbox.class+'">'+ currentGroup.name +'</legend>');
       fieldSet.append(legend);
       
       for(var fieldIndex=0; fieldIndex<currentGroup.fields.length; fieldIndex++){
@@ -32,26 +32,37 @@ class DataGroup {
         fieldSet.append(field);
       }
 
-      $('#'+this.divID).append(rowDiv);
+      
       
     }
+
+    $('#'+this.divID).append(rowDiv);
   }
 
   selectAllClickEvent() {
     var _this = this;
     $('#'+_this.selectAll.id).click(function() {
       if($(this).prop("checked")) {
-        $(".data_group").prop("checked", true);
-      } 
-      
-      else {
-        $(".data_group").prop("checked", false);
+        $("."+_this.checkbox.class).prop("checked", true);
+      } else {
+        $("."+_this.checkbox.class).prop("checked", false);
       }                
     });
 
-    $('.data_group').click(function() {
+    $('.'+_this.checkbox.class).click(function() {
       if($(this).prop("checked") == false) {
         $("#"+_this.selectAll.id).prop("checked", false);
+      } else {
+          var counter = 0;
+          for(var index=0;index<_this.dataGroup.length;index++) {
+            if($('#'+_this.dataGroup[index].id).prop("checked") == true) {
+              counter++;
+            }
+          }
+
+          if(counter == _this.dataGroup.length) {
+            $('#'+_this.selectAll.id).prop("checked", true);
+          }
       }
     })
   }
@@ -121,15 +132,68 @@ var options = {
 					name:'Field 9'
         }
 			]
-		}
+		},
+
+    {
+			id:'dataGroup4',
+			name:'Data Group 4',
+			fields :[
+				{
+					id:'field10',
+					name:'Field 10'
+				},
+
+        {
+          id:'field5',
+					name:'Field 5'
+        },
+
+        {
+          id:'field6',
+					name:'Field 6'
+        },
+
+        {
+          id:'field11',
+					name:'Field 11'
+        }
+			]
+		},
+
+    {
+			id:'dataGroup5',
+			name:'Data Group 5',
+			fields :[
+				{
+					id:'field10',
+					name:'Field 10'
+				},
+
+        {
+          id:'field5',
+					name:'Field 5'
+        },
+
+        {
+          id:'field6',
+					name:'Field 6'
+        },
+
+        {
+          id:'field11',
+					name:'Field 11'
+        }
+			]
+		},
+    
 	],
 
 	selectAll: {
     id: 'selectAll',
     name: 'Select All'
+  },
+
+  checkbox: {
+    class: 'data_group'
   }
 }
-
-$(document).ready(function() {
-  new DataGroup(options).init();
-});
